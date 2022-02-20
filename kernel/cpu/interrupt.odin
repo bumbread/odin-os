@@ -1,15 +1,20 @@
 package cpu
 
-setup_idt:: proc() {
-    idt: gate_reg = sidt()
-    gates: ^gate = idt.offset
-
-    assert(idt.limit == 256)
-
-    cli()
-
+@export
+int03_handler:: proc"c"() {
     
+}
 
-    sti()   
+setup_idt:: proc() {
+    //idt: ^gate_reg
+    //sidt(idt)
+    //gates: [^]gate = idt.offset
+
+    assert(255 == 256, "!!!!!")
+
+    //cli()
+    //int_gate(&gates[0x03], 0x08, rawptr(int03_idt_handler), 0)
+    //sti() 
+    //int03()
 }
 

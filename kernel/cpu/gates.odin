@@ -12,17 +12,17 @@ gate:: struct {
 
 gate_reg:: struct {
     limit: u16,
-    offset: ^gate,
+    offset: [^]gate,
 }
 
-int_gate:: proc(desc: ^gate, seg: int, offset: u64, dpl: int)
+int_gate:: proc(desc: ^gate, seg: int, offset: rawptr, dpl: int)
 {
-    desc.offset0 = u16(offset & 0xffff)
+    desc.offset0 = u16(uintptr(offset) & 0xffff)
     desc.segment = u16(seg)
     desc.stack = 0
     desc.attribs = u8(0b1110 | (dpl << 5))
-    desc.offset1 = u16((offset >> 16) & 0xffff)
-    desc.offset2 = u32(offset >> 32)
+    desc.offset1 = u16((uintptr(offset) >> 16) & 0xffff)
+    desc.offset2 = u32(uintptr(offset) >> 32)
 }
 
 gate_enable:: proc(desc: ^gate) {

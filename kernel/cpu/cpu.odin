@@ -5,9 +5,9 @@ foreign import cpu "bin/cpu.o"
 foreign cpu {
     enable_sse:: proc () ---
     lgdt:: proc(gdt: ^gate_reg) ---
-    sgdt:: proc()->gate_reg ---
+    sgdt:: proc(gr: ^gate_reg)---
     lidt:: proc(idt: ^gate_reg) ---
-    sidt:: proc()->gate_reg ---
+    sidt:: proc(gr: ^gate_reg)---
     sti:: proc() ---
     cli:: proc() ---
     inp1:: proc(value: int, port: int) ---
@@ -16,4 +16,7 @@ foreign cpu {
     out1:: proc(value: int, port: int) ---
     out2:: proc(value: int, port: int) ---
     out4:: proc(value: int, port: int) ---
+
+    int03_idt_handler:: proc"c"()---
+    int03:: proc"c"()---
 }

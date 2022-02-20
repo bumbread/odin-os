@@ -5,11 +5,10 @@ nasm kernel/cpu/cpu.asm -o bin/cpu.o -f elf64
 odin build kernel/boot/stivale2 \
     -build-mode:obj \
     -opt:0 \
-    -disable-assert \
     -no-crt \
-    -no-bounds-check \
     -default-to-nil-allocator \
-    \
+    -target:freestanding_amd64_gnu \
+    -foreign-error-procedures \
     -debug \
     -strict-style \
     -collection:kern=kernel \
