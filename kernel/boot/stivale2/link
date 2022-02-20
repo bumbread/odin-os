@@ -1,0 +1,24 @@
+
+ENTRY(kstartup)
+OUTPUT_FORMAT(elf64-x86-64)
+
+SECTIONS
+{
+    . = 0xffffffff80000000;
+
+    .text : ALIGN(0x1000) {
+        *(.text)
+    }
+    .data : ALIGN(0x1000) {
+        *(.data)
+    }
+    .bss : ALIGN(0x1000) {
+        *(.bss)
+    }
+    .stivale2hdr : ALIGN(0x10) {
+        QUAD(0);
+        QUAD(kernel_stack + 8096);
+        QUAD(0x1e);
+        QUAD(0);
+    }
+}

@@ -1,0 +1,30 @@
+#!/bin/sh
+
+nasm kernel/cpu/cpu.asm -o bin/cpu.o -f elf64
+
+odin build kernel/boot/stivale2 \
+    -build-mode:obj \
+    -opt:0 \
+    -disable-assert \
+    -no-crt \
+    -no-bounds-check \
+    -default-to-nil-allocator \
+    \
+    -debug \
+    -strict-style \
+    -collection:kern=kernel \
+    -out:bin/kernel.o
+ld.lld bin/kernel.o bin/cpu.o -T kernel/boot/stivale2/link -o bin/kernel.bin
+
+if [ ! -f bin/image ]; then
+    dd if=/dev/zero of=bin/image count=231072
+    printf "n\n\n\n\n\nw\n" | fdisk bin/image
+fi
+
+mformat -F c:
+mcopy bin/kernel.bin c:
+mcopy limine.cfg c:
+mmd c:/boot
+mcopy limine/bin/limine.sys c:
+
+limine/bin/limine-install bin/image
